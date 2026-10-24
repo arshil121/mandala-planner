@@ -115,7 +115,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--acc);outline:3px soli
 #about{max-width:1080px;margin:0 auto;padding:0 20px 40px}#about details{border-top:1px solid var(--line);padding:10px 0}#about summary{cursor:pointer;font-weight:600}#about a{color:var(--acc)}
 /* ---- Device optimisation: phones, tablets, touch, print ---- */
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-body{-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+body{-webkit-tap-highlight-color:transparent}
 .scr{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 input[type=checkbox]{width:22px;height:22px;min-width:22px;accent-color:var(--acc)}
 .it input[type=date],.it input[type=time]{min-width:140px}
@@ -128,6 +128,13 @@ h1{flex:1 1 100%}header button{padding:6px 12px;min-height:38px}
 .ov{place-items:end stretch;padding:0}.dlg{max-width:none;border-radius:16px 16px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
 .toast{width:calc(100% - 28px);text-align:center}}
 @media print{header,#bar,nav,#about,#tt,.ov{display:none!important}body{background:#fff}.card{box-shadow:none;break-inside:avoid}main{max-width:none;padding:0}}
+/* ---- Narrow-screen hardening: nothing may be clipped, even at ~300px ---- */
+header,#bar,nav,main,#about,.card,.cell{min-width:0}
+h1{font-size:clamp(20px,7vw,28px);overflow-wrap:anywhere}
+#sv{max-width:100%}
+.stats{grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr))}
+@media (max-width:560px){#bar select{min-width:0;width:100%}.it input[type=date],.it input[type=time]{min-width:0}.dlg{min-width:0}}
+@media (max-width:380px){header,#bar,main,#about{padding-left:12px;padding-right:12px}nav{width:calc(100% - 24px)}.card{padding:12px}.g3{gap:4px}.cell{padding:4px;font-size:13px;min-height:96px}.cell textarea{font-size:13px}.cell .mini{padding:2px 6px;font-size:12px}nav button{padding:8px 12px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
