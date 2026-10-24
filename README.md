@@ -2,7 +2,7 @@
 
 A free, single-file goal planner built on the Mandala Chart method. Turn one big goal into 64 concrete actions, pick your weekly priorities, and schedule them. No sign-up, no server, no tracking.
 
-**Live demo:** `https://<your-username>.github.io/<repo-name>/`
+**Live demo:** `https://arshil121.github.io/mandala-planner/`
 
 ## How it works
 
@@ -15,6 +15,7 @@ A free, single-file goal planner built on the Mandala Chart method. Turn one big
 
 ## Features
 
+- Multiple mandalas: keep a separate chart for each goal or project and switch between them
 - Linked 3×3 and 9×9 views of one dataset: 1 goal, 8 strategic goals, 64 actions
 - Brain dump for quick idea capture, then move ideas into action slots
 - Action plan with status, date, start time, duration and overlap warnings
