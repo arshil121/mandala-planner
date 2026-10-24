@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mandala Planner</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&display=swap">
+<style>
+:root{--bg:#f2f4f7;--card:#fff;--ink:#16213a;--mut:#5d6677;--line:#d9dee7;--acc:#1c2f66;--onacc:#fff;--acc2:#fbefc8;--warn:#a4540c;--goal:#1c2f66;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101626;--card:#172038;--ink:#e8ebf3;--mut:#9aa4ba;--line:#2a3555;--acc:#9db4ff;--onacc:#101626;--acc2:#3b3519;--warn:#f0b36a;--goal:#3b55b5;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101626;--card:#172038;--ink:#e8ebf3;--mut:#9aa4ba;--line:#2a3555;--acc:#9db4ff;--onacc:#101626;--acc2:#3b3519;--warn:#f0b36a;--goal:#3b55b5;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;margin:0 0 8px}
+h1{font-size:21px;flex:1}h2{font-size:19px}h3{font-size:16px}
+header{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 16px 4px;max-width:1000px;margin:auto}
+nav{display:flex;gap:6px;padding:6px 16px 10px;overflow-x:auto;max-width:1000px;margin:auto}
+nav button{white-space:nowrap}
+nav button[aria-current=page],button.on{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+main{max-width:1000px;margin:auto;padding:4px 16px 48px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+button,select,input,textarea{font:inherit;color:inherit}
+button{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;min-height:36px}
+button:hover{border-color:var(--acc)}button:disabled{opacity:.5;cursor:default}
+input,select,textarea{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 9px;width:100%}
+input[type=checkbox]{width:auto;min-width:18px;height:18px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.mut{color:var(--mut)}.sm{font-size:12.5px}.warn{color:var(--warn);font-size:12.5px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row+.row,.card>.row{margin-top:10px}
+.fl{display:block;margin-bottom:10px}.fl span{display:block;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:14px}
+.stats .card{margin:0}.stats b{font-size:22px;font-family:Fraunces,Georgia,serif}
+.bar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--acc)}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:600px;margin:12px auto}
+.cell{aspect-ratio:1;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:6px;display:flex;flex-direction:column;gap:3px;justify-content:center;align-items:center;text-align:center;font-size:13px;min-width:0}
+.cell textarea{flex:1;resize:none;border:0;background:transparent;text-align:center;padding:2px;width:100%;min-height:0}
+.cell label{font-size:12px;color:var(--mut)}.cell .mini{min-height:28px;padding:2px 8px;font-size:12px}
+.cell.goal{background:var(--goal);color:#fff;font-weight:600;font-family:Fraunces,Georgia,serif;font-size:15px}
+.cell.sub{background:var(--acc2)}.cell.sel{outline:2px solid var(--acc);outline-offset:1px}
+.g9{display:grid;grid-template-columns:repeat(9,var(--cw,90px));width:max-content}
+.c9{width:var(--cw,90px);height:calc(var(--cw,90px)*.8);border:1px solid var(--line);background:var(--card);font-size:calc(var(--cw,90px)*.125);line-height:1.2;padding:3px;overflow:hidden;cursor:pointer}
+.c9.sub{background:var(--acc2)}.c9.goal{background:var(--goal);color:#fff;font-weight:600}.c9.dn{text-decoration:line-through;color:var(--mut)}
+.bl{border-left:3px solid var(--mut)}.bt{border-top:3px solid var(--mut)}
+.scr{overflow-x:auto;padding-bottom:6px}
+.it{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.it .t{flex:1 1 220px;min-width:160px}.it select,.it input[type=date],.it input[type=time]{width:auto}.it .nm{width:72px}
+.done .tt{text-decoration:line-through;color:var(--mut)}
+.ov{position:fixed;inset:0;background:#0008;display:grid;place-items:center;padding:16px;z-index:9}
+.dlg{background:var(--card);border-radius:12px;padding:18px;max-width:560px;width:100%;max-height:90vh;overflow:auto}
+.danger{background:#b3261e;color:#fff;border-color:#b3261e}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;z-index:10;max-width:90vw}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header><h1>Mandala Planner</h1><span id="sv" class="mut sm" role="status">Saved locally</span><button id="un">Undo</button><button id="re">Redo</button><button id="th">Theme</button></header>
+<nav id="nav" aria-label="Sections"></nav>
+<main id="main"></main>
+<div id="tt" aria-live="polite"></div>
+<script>
+(()=>{
+'use strict';
+/* ---------- State & schema (single source of truth; every view reads S) ---------- */
+const KEY='mandala.v1',ST=['todo','doing','done','deferred','cancelled'];
+const str=x=>typeof x==='string'?x:'';
+const blank=()=>({v:1,goal:{t:'',why:'',date:''},subs:Array(8).fill(''),
+  acts:Array.from({length:8},()=>Array.from({length:8},()=>({t:'',st:'todo',d:'',tm:'',min:30}))),
+  week:[],ideas:[],theme:''});
+/* Validate/migrate any saved or imported object into the current schema */
+function norm(o){const b=blank();if(!o||typeof o!=='object')return b;const g=o.goal||{};
+  b.goal={t:str(g.t),why:str(g.why),date:str(g.date)};
+  if(Array.isArray(o.subs))b.subs=b.subs.map((_,i)=>str(o.subs[i]));
+  if(Array.isArray(o.acts))b.acts=b.acts.map((r,i)=>r.map((_,k)=>{const a=(o.acts[i]||[])[k]||{};
+    return{t:str(a.t),st:ST.includes(a.st)?a.st:'todo',d:str(a.d),tm:str(a.tm),min:Math.max(5,+a.min||30)}}));
+  if(Array.isArray(o.week))b.week=o.week.filter(x=>/^[0-7]-[0-7]$/.test(x));
+  if(Array.isArray(o.ideas))b.ideas=o.ideas.map(str).filter(Boolean);
+  b.theme=['light','dark'].includes(o.theme)?o.theme:'';return b}
+let S,loadNote='';
+try{const raw=localStorage.getItem(KEY);try{S=norm(JSON.parse(raw))}catch(e){S=blank();if(raw){localStorage.setItem(KEY+'.corrupt',raw);loadNote='Saved data could not be read. A copy was kept in this browser under a separate key.'}}}
+catch(e){S=blank();loadNote='Browser storage is unavailable (private mode or blocked), so your work cannot be saved. Use Data > Backup to keep a copy.'}
+let view='map',cur=0,flt='all',zoom=90;const hist=[],redo=[];
+const $=s=>document.querySelector(s);
+const pct=(a,b)=>b?Math.round(100*a/b):0;
+const sn=i=>S.subs[i].trim()||'Strategic goal '+(i+1);
+const idx=p=>p<4?p:p-1; /* grid position (0-8, centre 4) -> surrounding index 0-7 */
+const all=()=>{const r=[];S.acts.forEach((row,si)=>row.forEach((a,k)=>{if(a.t.trim())r.push({si,k,a,key:si+'-'+k})}));return r};
+const wkItems=()=>S.week.map(key=>{const[si,k]=key.split('-').map(Number),a=S.acts[si][k];return a.t.trim()?{si,k,a,key}:null}).filter(Boolean);
+const inWk=key=>S.week.includes(key);
+const p2=n=>String(n).padStart(2,'0');
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())};
+
+/* ---------- Persistence (debounced) ---------- */
+/* Debounced save, plus an immediate flush when the tab is hidden or closed so the last edit is never lost */
+let tm,dirty=false;
+function flush(){clearTimeout(tm);if(!dirty)return;try{localStorage.setItem(KEY,JSON.stringify(S));dirty=false;$('#sv').textContent='Saved in this browser'}catch(e){$('#sv').textContent='Not saved: storage is blocked or full. Use Data > Backup.'}}
+function save(){dirty=true;$('#sv').textContent='Saving…';clearTimeout(tm);tm=setTimeout(flush,300)}
+addEventListener('pagehide',flush);addEventListener('beforeunload',flush);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
+function commit(fn){hist.push(JSON.stringify(S));if(hist.length>40)hist.shift();redo.length=0;fn();save();render()}
+function undo(){if(!hist.length)return toast('Nothing to undo');redo.push(JSON.stringify(S));S=norm(JSON.parse(hist.pop()));theme();save();render()}
+function redoIt(){if(!redo.length)return toast('Nothing to redo');hist.push(JSON.stringify(S));S=norm(JSON.parse(redo.pop()));theme();save();render()}
+function theme(){if(S.theme)document.documentElement.dataset.theme=S.theme;else delete document.documentElement.dataset.theme}
+
+/* ---------- DOM helpers (text goes in via text nodes, never innerHTML) ---------- */
+function h(t,a,...c){const e=document.createElement(t);for(const k in a||{}){const v=a[k];if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(v===true)e.setAttribute(k,'');else if(v!==false&&v!=null)e.setAttribute(k,v)}
+  for(const x of c.flat(9))if(x!=null&&x!==false)e.append(x.nodeType?x:document.createTextNode(x));return e}
+function toast(m){const t=h('div',{class:'toast'},m);$('#tt').append(t);setTimeout(()=>t.remove(),2600)}
+function dlg(title,body,btns){const o=h('div',{class:'ov',onclick:e=>{if(e.target===o)o.remove()}},h('div',{class:'dlg',role:'dialog','aria-modal':'true','aria-label':title},h('h3',{},title),body,h('div',{class:'row'},btns,h('button',{onclick:()=>o.remove()},'Close'))));document.body.append(o);return o}
+function ask(msg,fn){const o=dlg('Please confirm',h('p',{},msg),[h('button',{class:'danger',onclick:()=>{o.remove();fn()}},'Confirm')])}
+function show(name,txt,note){const ta=h('textarea',{rows:10,readonly:true,'aria-label':name});ta.value=txt;
+  const o=dlg(name,h('div',{},h('p',{class:'mut sm'},note||'Download the file, or copy the text.'),ta),
+   [h('button',{class:'on',onclick:()=>{ta.select();try{navigator.clipboard.writeText(txt).then(()=>toast('Copied'),()=>toast('Press Ctrl/Cmd+C to copy'))}catch(e){toast('Press Ctrl/Cmd+C to copy')}}},'Copy'),
+    h('button',{onclick:()=>{const mt=name.endsWith('.ics')?'text/calendar':name.endsWith('.json')?'application/json':'text/csv',a=h('a',{href:URL.createObjectURL(new Blob([txt],{type:mt+';charset=utf-8'})),download:name});document.body.append(a);a.click();a.remove()}},'Download file')]);ta.focus();ta.select()}
+
+/* ---------- Actionability heuristic (advisory keyword rules, not AI) ---------- */
+function chk(t){t=t.trim();if(!t)return'';
+  if(/(million|viral|famous|\brich\b|successful|popular|views|followers|likes|subscribers|sales)/i.test(t)&&!/^(post|publish|make|record|contact|send|write|review|track|check|call|email)/i.test(t))
+    return'This looks like an outcome you cannot fully control. Try an action you can tick off, e.g. “Publish 3 videos a week”.';
+  if(/^(become|be |get |improve|learn about|work on|do more)/i.test(t)||(!/\d/.test(t)&&t.split(/\s+/).length<3))
+    return'Fairly vague. Add a number, frequency or deliverable, e.g. “Solve 3 problems every weekday”.';return''}
+
+/* ---------- Reusable pieces ---------- */
+function tcell(val,cls,label,fn,extra){const t=h('textarea',{rows:3,'aria-label':label,placeholder:label,
+  onchange:e=>commit(()=>fn(e.target.value.trim())),onkeydown:e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur()}}});t.value=val;return h('div',{class:'cell '+cls},t,extra)}
+function stat(l,v,p){const b=h('i');b.style.width=p+'%';return h('div',{class:'card'},h('div',{class:'mut sm'},l),h('b',{},v),h('div',{class:'bar'},b))}
+function stSel(a){const s=h('select',{'aria-label':'Status',onchange:e=>commit(()=>a.st=e.target.value)},ST.map(x=>h('option',{value:x},x)));s.value=a.st;return s}
+function dchk(a){return h('input',{type:'checkbox','aria-label':'Mark done',checked:a.st==='done',onchange:e=>commit(()=>a.st=e.target.checked?'done':'todo')})}
+function fin(a,type,key,label,cls){return h('input',{type,class:cls||'','aria-label':label,value:a[key],min:type==='number'?5:null,step:type==='number'?5:null,onchange:e=>commit(()=>a[key]=type==='number'?Math.max(5,+e.target.value||30):e.target.value)})}
+function overlaps(list){const s=list.filter(x=>x.a.d&&x.a.tm).map(x=>{const t=new Date(x.a.d+'T'+x.a.tm).getTime();return{k:x.key,s:t,e:t+(x.a.min||30)*6e4}});const bad=new Set();
+  s.forEach((a,i)=>s.forEach((b,j)=>{if(i<j&&a.s<b.e&&b.s<a.e){bad.add(a.k);bad.add(b.k)}}));return bad}
+
+/* ---------- Views ---------- */
+function vMap(){
+  const g=S.goal,d=all(),dn=d.filter(x=>x.a.st==='done').length,wk=wkItems(),wd=wk.filter(x=>x.a.st==='done').length;
+  const f=(l,v,fn,type,ph)=>{const i=h(type==='area'?'textarea':'input',{type:type==='area'?null:(type||'text'),rows:2,placeholder:ph||'','aria-label':l,onchange:e=>commit(()=>fn(e.target.value.trim()))});i.value=v;return h('label',{class:'fl'},h('span',{class:'mut'},l),i)};
+  const root=h('div');
+  root.append(h('div',{class:'card'},h('h2',{},g.t?'Your main goal':'Start here: name your main goal'),
+    f('Main goal (an outcome, not an activity)',g.t,v=>g.t=v,'text','e.g. Run a half marathon in under 2 hours'),
+    f('Why it matters',g.why,v=>g.why=v,'area'),f('Target date',g.date,v=>g.date=v,'date'),
+    h('p',{class:'mut sm'},'Then fill the eight cells around it with the areas you must get right. Open each one to plan eight actions.')));
+  root.append(h('div',{class:'stats'},stat('Planning (actions defined)',d.length+' / 64',pct(d.length,64)),stat('Execution (defined actions done)',dn+' / '+d.length,pct(dn,d.length)),stat('This week (priorities done)',wd+' / '+wk.length,pct(wd,wk.length))));
+  const g3=h('div',{class:'g3'});
+  for(let p=0;p<9;p++){if(p===4){g3.append(h('div',{class:'cell goal'},g.t||'Main goal'));continue}
+    const i=idx(p),n=S.acts[i].filter(a=>a.t.trim()).length;
+    g3.append(tcell(S.subs[i],'sub'+(i===cur?' sel':''),'Strategic goal '+(i+1),v=>S.subs[i]=v,h('button',{class:'mini',onclick:()=>{cur=i;render()}},'Open · '+n+'/8')))}
+  root.append(h('div',{class:'card'},h('h3',{},'Level 1: goal and eight strategic areas'),g3));
+  const a8=S.acts[cur],bl=h('div',{class:'g3'}),n=a8.filter(a=>a.t.trim()).length,dd=a8.filter(a=>a.t.trim()&&a.st==='done').length;
+  for(let p=0;p<9;p++){if(p===4){bl.append(tcell(S.subs[cur],'sub sel','Strategic goal '+(cur+1),v=>S.subs[cur]=v));continue}
+    const k=idx(p),a=a8[k];
+    bl.append(tcell(a.t,'','Action '+(k+1),v=>a.t=v,h('label',{},h('input',{type:'checkbox',checked:a.st==='done',disabled:!a.t.trim(),onchange:e=>commit(()=>a.st=e.target.checked?'done':'todo')}),' done')))}
+  root.append(h('div',{class:'card'},h('h3',{},'Level 2: block '+(cur+1)+' of 8 · '+sn(cur)),
+    h('p',{class:'mut sm'},n+'/8 actions planned · '+dd+' done. The centre cell is the same strategic goal you see above, so edits stay in sync.'),bl,
+    a8.map((a,k)=>chk(a.t)&&h('div',{class:'warn'},'Action '+(k+1)+': '+chk(a.t))),
+    h('div',{class:'row'},h('button',{onclick:()=>{cur=(cur+7)%8;render()}},'‹ Previous'),h('button',{onclick:()=>{cur=(cur+1)%8;render()}},'Next ›'),h('button',{onclick:()=>{view='full';render()}},'See 9×9 chart'))));
+  return root}
+
+function vFull(){
+  const g9=h('div',{class:'g9'});g9.style.setProperty('--cw',zoom+'px');
+  for(let r=0;r<9;r++)for(let c=0;c<9;c++){
+    const b=((r/3)|0)*3+((c/3)|0),p=(r%3)*3+(c%3),k=idx(p);let t,cls='c9',si;
+    if(b===4){if(p===4){t=S.goal.t;cls+=' goal'}else{t=S.subs[k];si=k;cls+=' sub'}}
+    else{si=b<4?b:b-1;if(p===4){t=S.subs[si];cls+=' sub'}else{const a=S.acts[si][k];t=a.t;if(a.st==='done')cls+=' dn'}}
+    if(c%3===0&&c)cls+=' bl';if(r%3===0&&r)cls+=' bt';
+    const go=()=>{if(si!==undefined)cur=si;view='map';render();window.scrollTo(0,0)};
+    g9.append(h('div',{class:cls,tabindex:0,role:'button',title:t,'aria-label':(t||'empty cell')+', row '+(r+1)+' column '+(c+1),onclick:go,onkeydown:e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}},t))}
+  const z=h('input',{type:'range',min:50,max:150,value:zoom,'aria-label':'Zoom',oninput:e=>{zoom=+e.target.value;g9.style.setProperty('--cw',zoom+'px')}});
+  return h('div',{class:'card'},h('h2',{},'Full 9×9 chart'),
+    h('p',{class:'mut sm'},'81 positions, 73 distinct entries: 1 goal, 8 strategic goals (shown twice) and 64 actions. Select any cell to edit it.'),
+    h('div',{class:'row'},h('span',{class:'sm'},'Zoom'),h('div',{style:'width:160px'},z),h('button',{onclick:()=>{zoom=Math.max(50,Math.min(150,Math.floor((innerWidth-64)/9)));render()}},'Fit to screen')),
+    h('div',{class:'scr'},g9))}
+
+function vActs(){
+  const items=all().filter(x=>flt==='all'||x.si===+flt),bad=overlaps(all());
+  const fs=h('select',{'aria-label':'Filter by strategic goal',onchange:e=>{flt=e.target.value;render()}},h('option',{value:'all'},'All strategic goals'),S.subs.map((_,i)=>h('option',{value:i},sn(i))));fs.value=flt;
+  return h('div',{class:'card'},h('h2',{},'Action plan'),
+    h('p',{class:'mut sm'},'Refine each action: status, date, start time and duration. Star up to eight for this week.'),h('div',{class:'row'},fs),
+    items.length?items.map(x=>{const a=x.a;return h('div',{class:'it'+(a.st==='done'?' done':'')},dchk(a),
+      h('div',{class:'t'},h('div',{class:'tt'},a.t),h('div',{class:'mut sm'},sn(x.si)),chk(a.t)&&h('div',{class:'warn'},chk(a.t)),bad.has(x.key)&&h('div',{class:'warn'},'Overlaps another scheduled action')),
+      stSel(a),fin(a,'date','d','Date'),fin(a,'time','tm','Start time'),fin(a,'number','min','Minutes','nm'),
+      h('button',{class:inWk(x.key)?'on':'',onclick:()=>togWk(x.key)},inWk(x.key)?'In this week':'Add to week'))}):
+    h('p',{class:'mut'},'No actions yet. Open a strategic goal in My Mandala and add its actions.'))}
+function togWk(key){commit(()=>{if(inWk(key))S.week=S.week.filter(x=>x!==key);else{S.week.push(key);if(S.week.length>8)toast('More than 8 this week. Consider trimming.')}})}
+
+/* ---------- Calendar export (.ics, generated locally) ---------- */
+const fl=e=>''+e.getFullYear()+p2(e.getMonth()+1)+p2(e.getDate())+'T'+p2(e.getHours())+p2(e.getMinutes())+'00';
+function ics(items){const esc=s=>s.replace(/[\\;,]/g,'\\$&').replace(/\n/g,'\\n'),L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Mandala Planner//EN'],stamp=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
+  for(const x of items){const a=x.a,d=a.d.replace(/-/g,'');L.push('BEGIN:VEVENT','UID:'+x.key+'-'+d+'@mandala.local','DTSTAMP:'+stamp);
+    if(a.tm){const e=new Date(a.d+'T'+a.tm);e.setMinutes(e.getMinutes()+(+a.min||30));L.push('DTSTART:'+d+'T'+a.tm.replace(':','')+'00','DTEND:'+fl(e))}else L.push('DTSTART;VALUE=DATE:'+d);
+    L.push('SUMMARY:'+esc(a.t),'DESCRIPTION:'+esc('Strategic goal: '+sn(x.si)+'. Duration: '+a.min+' min.'),'END:VEVENT')}
+  L.push('END:VCALENDAR');return L.join('\r\n')}
+function exportIcs(list,name){const s=list.filter(x=>x.a.d);if(!s.length)return toast('Give these actions a date in the Action plan first');
+  if(s.length<list.length)toast((list.length-s.length)+' without a date were skipped');show(name,ics(s),'Calendar file. Download it and open it, or import it into any calendar app.')}
+
+function vWeek(){
+  const wk=wkItems(),n=wk.length,bad=overlaps(all()),td=all().filter(x=>x.a.d===today()).sort((a,b)=>(a.a.tm||'').localeCompare(b.a.tm||''));
+  const mv=(i,d)=>{const j=i+d;if(j<0||j>=n)return;commit(()=>{const x=S.week.indexOf(wk[i].key),y=S.week.indexOf(wk[j].key);[S.week[x],S.week[y]]=[S.week[y],S.week[x]]})};
+  const root=h('div');
+  root.append(h('div',{class:'card'},h('h2',{},'This week’s priorities'),
+    h('p',{class:n>8?'warn':'mut sm'},n+' selected. Recommended: 5 to 8'+(n>8?'. You are over the limit; consider deferring some.':n&&n<5?'. Fewer is fine if your week is busy.':'.')),
+    n?wk.map((x,i)=>h('div',{class:'it'+(x.a.st==='done'?' done':'')},dchk(x.a),
+      h('div',{class:'t'},h('div',{class:'tt'},x.a.t),h('div',{class:'mut sm'},sn(x.si)+(x.a.d?' · '+x.a.d+(x.a.tm?' '+x.a.tm:''):' · not scheduled')),bad.has(x.key)&&h('div',{class:'warn'},'Overlaps another scheduled action')),
+      stSel(x.a),h('button',{'aria-label':'Move up',onclick:()=>mv(i,-1)},'↑'),h('button',{'aria-label':'Move down',onclick:()=>mv(i,1)},'↓'),h('button',{onclick:()=>togWk(x.key)},'Remove'))):
+      h('p',{class:'mut'},'Nothing selected yet. Use “Add to week” in the Action plan.'),
+    h('div',{class:'row'},h('button',{onclick:()=>exportIcs(wk,'mandala-week.ics')},'Export week (.ics)'),h('button',{onclick:()=>exportIcs(all(),'mandala-all.ics')},'Export all scheduled (.ics)'))));
+  root.append(h('div',{class:'card'},h('h3',{},'Today · '+today()),td.length?td.map(x=>h('div',{class:'it'+(x.a.st==='done'?' done':'')},dchk(x.a),h('div',{class:'t'},h('div',{class:'tt'},(x.a.tm?x.a.tm+' · ':'')+x.a.t),h('div',{class:'mut sm'},sn(x.si))))):h('p',{class:'mut'},'Nothing scheduled for today.')));
+  return root}
+
+function vIdeas(){
+  const inp=h('input',{placeholder:'Type an idea and press Enter','aria-label':'New idea',onkeydown:e=>{if(e.key==='Enter'&&e.target.value.trim()){const v=e.target.value.trim();commit(()=>S.ideas.unshift(v))}}});
+  return h('div',{class:'card'},h('h2',{},'Brain dump'),h('p',{class:'mut sm'},'Write everything down first. Sort it later by moving each idea into an action slot.'),inp,
+    S.ideas.length?S.ideas.map((t,i)=>{const e=h('input',{'aria-label':'Idea',onchange:ev=>commit(()=>{const v=ev.target.value.trim();if(v)S.ideas[i]=v;else S.ideas.splice(i,1)})});e.value=t;
+      const sel=h('select',{'aria-label':'Move to'},S.subs.map((_,j)=>h('option',{value:j},sn(j))));sel.value=cur;
+      return h('div',{class:'it'},h('div',{class:'t'},e),sel,h('button',{onclick:()=>{const si=+sel.value,k=S.acts[si].findIndex(a=>!a.t.trim());if(k<0)return toast('That block already has 8 actions');commit(()=>{S.acts[si][k].t=t;S.ideas.splice(i,1)});toast('Moved to '+sn(si))}},'Move to Mandala'),
+        h('button',{'aria-label':'Delete idea',onclick:()=>commit(()=>S.ideas.splice(i,1))},'Delete'))}):h('p',{class:'mut'},'No ideas yet.'))}
+
+function csv(){const q=v=>'"'+String(v).replace(/"/g,'""')+'"';return[['Strategic goal','Action','Status','Date','Start time','Minutes','In this week'].map(q).join(',')].concat(all().map(x=>[sn(x.si),x.a.t,x.a.st,x.a.d,x.a.tm,x.a.min,inWk(x.key)?'yes':'no'].map(q).join(','))).join('\n')}
+function vData(){
+  const ta=h('textarea',{rows:6,placeholder:'Paste a JSON backup here','aria-label':'Backup JSON'});
+  const fi=h('input',{type:'file',accept:'.json,application/json','aria-label':'Choose backup file',onchange:e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>ta.value=String(r.result);r.readAsText(f)}});
+  return h('div',{},h('div',{class:'card'},h('h2',{},'Export'),h('div',{class:'row'},h('button',{onclick:()=>show('mandala-backup.json',JSON.stringify(S,null,2),'Full backup of your workspace. You can restore it later under Import.')},'Backup (JSON)'),h('button',{onclick:()=>show('mandala-actions.csv',csv(),'The defined actions as CSV.')},'Actions (CSV)'))),
+    h('div',{class:'card'},h('h2',{},'Import'),h('p',{class:'mut sm'},'The backup is checked before anything changes, and you confirm before it replaces your workspace.'),fi,ta,
+      h('div',{class:'row'},h('button',{onclick:()=>{let o;try{o=JSON.parse(ta.value)}catch(e){return toast('That is not valid JSON')}
+        if(!o||o.v!==1||!Array.isArray(o.subs)||!Array.isArray(o.acts))return toast('This is not a Mandala Planner backup');
+        ask('Replace your current workspace with this backup? You can use Undo right afterwards.',()=>commit(()=>{S=norm(o);theme()}))}},'Check and import'))),
+    h('div',{class:'card'},h('h2',{},'Storage and reset'),h('p',{class:'mut sm'},'Your work is saved automatically in this browser’s localStorage. It stays after you close the tab or the browser, and is there when you come back. It is not a cloud backup, does not sync between devices or browsers, and is erased if you clear site data or use private mode, so export a JSON backup now and then.'),
+      h('button',{class:'danger',onclick:()=>ask('Erase the whole workspace? You can use Undo right afterwards, but not after closing this page.',()=>commit(()=>{S=blank();theme()}))},'Reset workspace')))}
+
+/* ---------- Shell ---------- */
+const NAV=[['map','My Mandala'],['full','9×9 chart'],['acts','Action plan'],['week','Week'],['ideas','Brain dump'],['data','Data']],V={map:vMap,full:vFull,acts:vActs,week:vWeek,ideas:vIdeas,data:vData};
+const nav=$('#nav');
+NAV.forEach(([k,l])=>nav.append(h('button',{'data-v':k,onclick:()=>{view=k;render();window.scrollTo(0,0)}},l)));
+function render(){nav.querySelectorAll('button').forEach(b=>b.toggleAttribute('aria-current',false)||(b.dataset.v===view&&b.setAttribute('aria-current','page')));const m=$('#main');m.replaceChildren(V[view]());if(loadNote)m.prepend(h('div',{class:'card warn'},loadNote))}
+$('#un').onclick=undo;$('#re').onclick=redoIt;
+$('#th').onclick=()=>{const d=matchMedia('(prefers-color-scheme: dark)').matches,c=S.theme||(d?'dark':'light');S.theme=c==='dark'?'light':'dark';theme();save()};
+/* Ask the browser to keep this site's data even under storage pressure; sync edits made in another tab */
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+addEventListener('storage',e=>{if(e.key===KEY&&e.newValue&&!dirty){try{S=norm(JSON.parse(e.newValue));theme();render()}catch(x){}}});
+theme();render();
+})();
+</script>
+</body>
+</html>
