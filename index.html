@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mandala Planner</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
 <style>
 :root{--bg:#f2f4f7;--card:#fff;--ink:#16213a;--mut:#5d6677;--line:#d9dee7;--acc:#1c2f66;--onacc:#fff;--acc2:#fbefc8;--warn:#a4540c;--goal:#1c2f66;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101626;--card:#172038;--ink:#e8ebf3;--mut:#9aa4ba;--line:#2a3555;--acc:#9db4ff;--onacc:#101626;--acc2:#3b3519;--warn:#f0b36a;--goal:#3b55b5;color-scheme:dark}}
@@ -50,11 +50,48 @@ input[type=checkbox]{width:auto;min-width:18px;height:18px}
 .dlg{background:var(--card);border-radius:12px;padding:18px;max-width:560px;width:100%;max-height:90vh;overflow:auto}
 .danger{background:#b3261e;color:#fff;border-color:#b3261e}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;z-index:10;max-width:90vw}
+#bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:4px 16px 6px;max-width:1000px;margin:auto}#bar select{width:auto;max-width:100%;min-width:180px;font-weight:600}
+/* ---- Refined typography and surfaces (overrides above) ---- */
+:root{--bg:#f4f5fb;--line:#dfe2ee;--acc:#2a3f8f;--acc2:#fdf0c9;--goal:#26337a;--sh:0 1px 2px rgba(22,33,58,.06),0 6px 18px rgba(22,33,58,.07)}
+body{font:16px/1.6 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:700;letter-spacing:-.015em;line-height:1.2}
+h1{font-size:28px;display:flex;align-items:center;gap:10px}h1 svg{color:var(--acc);flex:none}
+h2{font-size:24px;margin-bottom:10px}h3{font-size:19px}
+header{max-width:1080px;padding:22px 20px 8px}
+#sv{font-size:13px;padding:4px 12px;border-radius:99px;background:var(--card);border:1px solid var(--line)}
+#bar{max-width:1080px;padding:6px 20px 8px}#bar select{font-size:16px;font-weight:700;border:2px solid var(--acc)}
+nav{max-width:1040px;width:calc(100% - 40px);margin:6px auto 14px;padding:5px;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh)}
+nav button{border:0;background:transparent;font-weight:600;color:var(--mut);padding:8px 16px;border-radius:10px}
+nav button:hover{color:var(--ink);background:var(--bg)}
+nav button[aria-current=page]{background:var(--acc);color:var(--onacc)}
+main{max-width:1080px;padding:6px 20px 56px}
+.card{border-radius:16px;padding:22px;box-shadow:var(--sh);margin-bottom:18px}
+button{font-weight:600;border-radius:10px;padding:8px 16px;min-height:40px;transition:background .15s,border-color .15s,transform .1s}
+button:hover{background:var(--acc2);border-color:var(--acc)}button:active{transform:translateY(1px)}
+button.on:hover{background:var(--acc);filter:brightness(1.12)}.danger:hover{background:#b3261e;filter:brightness(1.1)}
+input,select,textarea{font-size:16px;padding:10px 12px;border-radius:10px}
+input:focus,select:focus,textarea:focus{border-color:var(--acc);outline:3px solid color-mix(in srgb,var(--acc) 25%,transparent);outline-offset:0}
+::placeholder{color:var(--mut);opacity:.75}
+.sm,.warn{font-size:13.5px}.fl span{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.stats{gap:14px;margin-bottom:18px}.stats .mut{font-weight:600}.stats b{font-size:32px;line-height:1.15;display:block;margin:2px 0}
+.bar{height:8px;margin-top:8px}
+.g3{gap:10px;max-width:640px}
+.cell{border-radius:14px;font-size:15px;padding:8px;transition:border-color .15s}.cell:hover{border-color:var(--acc)}
+.cell textarea{font-size:15px;line-height:1.35}
+.cell.goal{font-size:19px;line-height:1.25;padding:12px;box-shadow:var(--sh)}
+.cell.sub{border-color:color-mix(in srgb,var(--acc2),var(--ink) 18%)}
+.cell label{font-size:13px}.cell .mini{font-size:13px;min-height:32px;padding:3px 10px;border-radius:8px;background:var(--card)}
+.c9{font-size:calc(var(--cw,90px)*.14)}.c9:hover{border-color:var(--acc)}.c9.goal{font-family:Fraunces,Georgia,serif}
+.it{padding:14px 0}.it .tt{font-weight:600}.it .mut{font-size:13.5px}
+.dlg{border-radius:16px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.toast{padding:10px 18px;border-radius:12px;font-weight:600;box-shadow:var(--sh)}
+@media (max-width:560px){h1{font-size:23px}h2{font-size:21px}header,#bar{padding-left:14px;padding-right:14px}main{padding:4px 14px 40px}nav{width:calc(100% - 28px)}.card{padding:16px}.g3{gap:6px}.cell{font-size:14px;padding:6px}.cell textarea{font-size:14px}.cell.goal{font-size:16px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-<header><h1>Mandala Planner</h1><span id="sv" class="mut sm" role="status">Saved locally</span><button id="un">Undo</button><button id="re">Redo</button><button id="th">Theme</button></header>
+<header><h1><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor" opacity=".5"><circle cx="5" cy="5" r="2.3"/><circle cx="12" cy="5" r="2.3"/><circle cx="19" cy="5" r="2.3"/><circle cx="5" cy="12" r="2.3"/><circle cx="19" cy="12" r="2.3"/><circle cx="5" cy="19" r="2.3"/><circle cx="12" cy="19" r="2.3"/><circle cx="19" cy="19" r="2.3"/></g><circle cx="12" cy="12" r="3.6" fill="#e8a317"/></svg>Mandala Planner</h1><span id="sv" class="mut sm" role="status">Saved locally</span><button id="un">Undo</button><button id="re">Redo</button><button id="th">Theme</button></header>
+<div id="bar"><select id="ch" aria-label="Choose mandala"></select><button id="nw">New mandala</button><button id="rn">Rename</button><button id="dl">Delete</button></div>
 <nav id="nav" aria-label="Sections"></nav>
 <main id="main"></main>
 <div id="tt" aria-live="polite"></div>
@@ -64,21 +101,28 @@ input[type=checkbox]{width:auto;min-width:18px;height:18px}
 /* ---------- State & schema (single source of truth; every view reads S) ---------- */
 const KEY='mandala.v1',ST=['todo','doing','done','deferred','cancelled'];
 const str=x=>typeof x==='string'?x:'';
-const blank=()=>({v:1,goal:{t:'',why:'',date:''},subs:Array(8).fill(''),
+const blank=()=>({v:1,id:Math.random().toString(36).slice(2,10),name:'My Mandala',goal:{t:'',why:'',date:''},subs:Array(8).fill(''),
   acts:Array.from({length:8},()=>Array.from({length:8},()=>({t:'',st:'todo',d:'',tm:'',min:30}))),
   week:[],ideas:[],theme:''});
 /* Validate/migrate any saved or imported object into the current schema */
-function norm(o){const b=blank();if(!o||typeof o!=='object')return b;const g=o.goal||{};
+function norm(o){const b=blank();if(!o||typeof o!=='object')return b;const g=o.goal||{};b.name=str(o.name).trim().slice(0,60)||b.name;if(str(o.id))b.id=str(o.id).slice(0,20);
   b.goal={t:str(g.t),why:str(g.why),date:str(g.date)};
   if(Array.isArray(o.subs))b.subs=b.subs.map((_,i)=>str(o.subs[i]));
   if(Array.isArray(o.acts))b.acts=b.acts.map((r,i)=>r.map((_,k)=>{const a=(o.acts[i]||[])[k]||{};
     return{t:str(a.t),st:ST.includes(a.st)?a.st:'todo',d:str(a.d),tm:str(a.tm),min:Math.max(5,+a.min||30)}}));
   if(Array.isArray(o.week))b.week=o.week.filter(x=>/^[0-7]-[0-7]$/.test(x));
   if(Array.isArray(o.ideas))b.ideas=o.ideas.map(str).filter(Boolean);
-  b.theme=['light','dark'].includes(o.theme)?o.theme:'';return b}
-let S,loadNote='';
-try{const raw=localStorage.getItem(KEY);try{S=norm(JSON.parse(raw))}catch(e){S=blank();if(raw){localStorage.setItem(KEY+'.corrupt',raw);loadNote='Saved data could not be read. A copy was kept in this browser under a separate key.'}}}
-catch(e){S=blank();loadNote='Browser storage is unavailable (private mode or blocked), so your work cannot be saved. Use Data > Backup to keep a copy.'}
+  return b}
+/* Workspace = several mandalas (W.charts). Old single-mandala saves (v1) are migrated automatically. */
+function normW(o){const w={v:2,active:0,theme:'',charts:[]},th=x=>['light','dark'].includes(x)?x:'';
+  if(o&&o.v===2&&Array.isArray(o.charts)){w.charts=o.charts.slice(0,50).map(norm);w.active=Math.max(0,Math.min(+o.active||0,w.charts.length-1));w.theme=th(o.theme)}
+  else if(o&&typeof o==='object'&&o.v===1){w.charts=[norm(o)];w.theme=th(o.theme)}
+  if(!w.charts.length)w.charts=[norm(null)];
+  const seen=new Set();w.charts.forEach(c=>{if(seen.has(c.id))c.id=Math.random().toString(36).slice(2,10);seen.add(c.id)});return w}
+let W,S,loadNote='';
+try{const raw=localStorage.getItem(KEY);try{W=normW(JSON.parse(raw))}catch(e){W=normW(null);if(raw){localStorage.setItem(KEY+'.corrupt',raw);loadNote='Saved data could not be read. A copy was kept in this browser under a separate key.'}}}
+catch(e){W=normW(null);loadNote='Browser storage is unavailable (private mode or blocked), so your work cannot be saved. Use Data > Backup to keep a copy.'}
+S=W.charts[W.active];
 let view='map',cur=0,flt='all',zoom=90;const hist=[],redo=[];
 const $=s=>document.querySelector(s);
 const pct=(a,b)=>b?Math.round(100*a/b):0;
@@ -93,14 +137,14 @@ const today=()=>{const d=new Date();return d.getFullYear()+'-'+p2(d.getMonth()+1
 /* ---------- Persistence (debounced) ---------- */
 /* Debounced save, plus an immediate flush when the tab is hidden or closed so the last edit is never lost */
 let tm,dirty=false;
-function flush(){clearTimeout(tm);if(!dirty)return;try{localStorage.setItem(KEY,JSON.stringify(S));dirty=false;$('#sv').textContent='Saved in this browser'}catch(e){$('#sv').textContent='Not saved: storage is blocked or full. Use Data > Backup.'}}
+function flush(){clearTimeout(tm);if(!dirty)return;try{W.charts[W.active]=S;localStorage.setItem(KEY,JSON.stringify(W));dirty=false;$('#sv').textContent='Saved in this browser'}catch(e){$('#sv').textContent='Not saved: storage is blocked or full. Use Data > Backup.'}}
 function save(){dirty=true;$('#sv').textContent='Saving…';clearTimeout(tm);tm=setTimeout(flush,300)}
 addEventListener('pagehide',flush);addEventListener('beforeunload',flush);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
 function commit(fn){hist.push(JSON.stringify(S));if(hist.length>40)hist.shift();redo.length=0;fn();save();render()}
 function undo(){if(!hist.length)return toast('Nothing to undo');redo.push(JSON.stringify(S));S=norm(JSON.parse(hist.pop()));theme();save();render()}
 function redoIt(){if(!redo.length)return toast('Nothing to redo');hist.push(JSON.stringify(S));S=norm(JSON.parse(redo.pop()));theme();save();render()}
-function theme(){if(S.theme)document.documentElement.dataset.theme=S.theme;else delete document.documentElement.dataset.theme}
+function theme(){if(W.theme)document.documentElement.dataset.theme=W.theme;else delete document.documentElement.dataset.theme}
 
 /* ---------- DOM helpers (text goes in via text nodes, never innerHTML) ---------- */
 function h(t,a,...c){const e=document.createElement(t);for(const k in a||{}){const v=a[k];if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(v===true)e.setAttribute(k,'');else if(v!==false&&v!=null)e.setAttribute(k,v)}
@@ -218,24 +262,34 @@ function csv(){const q=v=>'"'+String(v).replace(/"/g,'""')+'"';return[['Strategi
 function vData(){
   const ta=h('textarea',{rows:6,placeholder:'Paste a JSON backup here','aria-label':'Backup JSON'});
   const fi=h('input',{type:'file',accept:'.json,application/json','aria-label':'Choose backup file',onchange:e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>ta.value=String(r.result);r.readAsText(f)}});
-  return h('div',{},h('div',{class:'card'},h('h2',{},'Export'),h('div',{class:'row'},h('button',{onclick:()=>show('mandala-backup.json',JSON.stringify(S,null,2),'Full backup of your workspace. You can restore it later under Import.')},'Backup (JSON)'),h('button',{onclick:()=>show('mandala-actions.csv',csv(),'The defined actions as CSV.')},'Actions (CSV)'))),
+  return h('div',{},h('div',{class:'card'},h('h2',{},'Export'),h('div',{class:'row'},h('button',{onclick:()=>show('mandala-backup.json',ws(),'Full backup of all your mandalas. You can restore it later under Import.')},'Backup (JSON)'),h('button',{onclick:()=>show('mandala-actions.csv',csv(),'The defined actions of the current mandala as CSV.')},'Actions (CSV)'))),
     h('div',{class:'card'},h('h2',{},'Import'),h('p',{class:'mut sm'},'The backup is checked before anything changes, and you confirm before it replaces your workspace.'),fi,ta,
       h('div',{class:'row'},h('button',{onclick:()=>{let o;try{o=JSON.parse(ta.value)}catch(e){return toast('That is not valid JSON')}
-        if(!o||o.v!==1||!Array.isArray(o.subs)||!Array.isArray(o.acts))return toast('This is not a Mandala Planner backup');
-        ask('Replace your current workspace with this backup? You can use Undo right afterwards.',()=>commit(()=>{S=norm(o);theme()}))}},'Check and import'))),
+        const isW=o&&o.v===2&&Array.isArray(o.charts);if(!o||(!isW&&(o.v!==1||!Array.isArray(o.subs)||!Array.isArray(o.acts))))return toast('This is not a Mandala Planner backup');
+        isW?ask('This replaces ALL your mandalas with the backup. Export a backup of the current ones first if unsure.',()=>{W=normW(o);S=W.charts[W.active];hist.length=0;redo.length=0;cur=0;flt='all';theme();save();render()}):addChart(norm(o))}},'Check and import'))),
     h('div',{class:'card'},h('h2',{},'Storage and reset'),h('p',{class:'mut sm'},'Your work is saved automatically in this browser’s localStorage. It stays after you close the tab or the browser, and is there when you come back. It is not a cloud backup, does not sync between devices or browsers, and is erased if you clear site data or use private mode, so export a JSON backup now and then.'),
-      h('button',{class:'danger',onclick:()=>ask('Erase the whole workspace? You can use Undo right afterwards, but not after closing this page.',()=>commit(()=>{S=blank();theme()}))},'Reset workspace')))}
+      h('button',{class:'danger',onclick:()=>ask('Erase everything in “'+S.name+'”? Your other mandalas are not affected. You can use Undo right afterwards, but not after closing this page.',()=>commit(()=>{const c=S;S=blank();S.id=c.id;S.name=c.name}))},'Reset this mandala')))}
 
 /* ---------- Shell ---------- */
 const NAV=[['map','My Mandala'],['full','9×9 chart'],['acts','Action plan'],['week','Week'],['ideas','Brain dump'],['data','Data']],V={map:vMap,full:vFull,acts:vActs,week:vWeek,ideas:vIdeas,data:vData};
 const nav=$('#nav');
 NAV.forEach(([k,l])=>nav.append(h('button',{'data-v':k,onclick:()=>{view=k;render();window.scrollTo(0,0)}},l)));
-function render(){nav.querySelectorAll('button').forEach(b=>b.toggleAttribute('aria-current',false)||(b.dataset.v===view&&b.setAttribute('aria-current','page')));const m=$('#main');m.replaceChildren(V[view]());if(loadNote)m.prepend(h('div',{class:'card warn'},loadNote))}
+function render(){fillSel();nav.querySelectorAll('button').forEach(b=>b.toggleAttribute('aria-current',false)||(b.dataset.v===view&&b.setAttribute('aria-current','page')));const m=$('#main');m.replaceChildren(V[view]());if(loadNote)m.prepend(h('div',{class:'card warn'},loadNote))}
 $('#un').onclick=undo;$('#re').onclick=redoIt;
-$('#th').onclick=()=>{const d=matchMedia('(prefers-color-scheme: dark)').matches,c=S.theme||(d?'dark':'light');S.theme=c==='dark'?'light':'dark';theme();save()};
+/* ---------- Multiple mandalas ---------- */
+const ws=()=>{W.charts[W.active]=S;return JSON.stringify(W,null,2)};
+function fillSel(){W.charts[W.active]=S;const s=$('#ch');s.replaceChildren(...W.charts.map((c,i)=>h('option',{value:i},c.name)));s.value=W.active;$('#dl').hidden=W.charts.length<2}
+function sw(i){W.charts[W.active]=S;W.active=i;S=W.charts[i];hist.length=0;redo.length=0;cur=0;flt='all';save();render()}
+function addChart(c){if(W.charts.length>=50)return toast('Limit of 50 mandalas reached');W.charts[W.active]=S;W.charts.push(c);view='map';sw(W.charts.length-1);toast('Created “'+c.name+'”')}
+function nameDlg(title,val,fn){const i=h('input',{'aria-label':'Mandala name',maxlength:60,placeholder:'e.g. Get fit, Launch my app',onkeydown:e=>{if(e.key==='Enter')go()}});i.value=val;const go=()=>{const v=i.value.trim();if(!v)return toast('Enter a name');o.remove();fn(v)};const o=dlg(title,i,[h('button',{class:'on',onclick:go},'Save')]);i.focus();i.select()}
+$('#ch').onchange=e=>sw(+e.target.value);
+$('#nw').onclick=()=>nameDlg('New mandala','',v=>{const c=blank();c.name=v;addChart(c)});
+$('#rn').onclick=()=>nameDlg('Rename mandala',S.name,v=>commit(()=>S.name=v));
+$('#dl').onclick=()=>ask('Delete “'+S.name+'” and everything in it? This cannot be undone.',()=>{W.charts.splice(W.active,1);W.active=Math.max(0,W.active-1);S=W.charts[W.active];hist.length=0;redo.length=0;cur=0;flt='all';save();render();toast('Mandala deleted')});
+$('#th').onclick=()=>{const d=matchMedia('(prefers-color-scheme: dark)').matches,c=W.theme||(d?'dark':'light');W.theme=c==='dark'?'light':'dark';theme();save()};
 /* Ask the browser to keep this site's data even under storage pressure; sync edits made in another tab */
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
-addEventListener('storage',e=>{if(e.key===KEY&&e.newValue&&!dirty){try{S=norm(JSON.parse(e.newValue));theme();render()}catch(x){}}});
+addEventListener('storage',e=>{if(e.key===KEY&&e.newValue&&!dirty){try{const n=normW(JSON.parse(e.newValue)),i=n.charts.findIndex(c=>c.id===S.id);W=n;W.active=i<0?0:i;S=W.charts[W.active];hist.length=0;redo.length=0;theme();render()}catch(x){}}});
 theme();render();
 })();
 </script>
