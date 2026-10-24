@@ -8,6 +8,12 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#2a3f8f">
 <link rel="canonical" href="https://arshil121.github.io/mandala-planner/">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mandala">
+<meta name="theme-color" content="#101626" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%232a3f8f'/%3E%3Ccircle cx='12' cy='12' r='4' fill='%23e8a317'/%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Mandala Planner">
@@ -107,6 +113,21 @@ input:focus,select:focus,textarea:focus{border-color:var(--acc);outline:3px soli
 .toast{padding:10px 18px;border-radius:12px;font-weight:600;box-shadow:var(--sh)}
 @media (max-width:560px){h1{font-size:23px}h2{font-size:21px}header,#bar{padding-left:14px;padding-right:14px}main{padding:4px 14px 40px}nav{width:calc(100% - 28px)}.card{padding:16px}.g3{gap:6px}.cell{font-size:14px;padding:6px}.cell textarea{font-size:14px}.cell.goal{font-size:16px}}
 #about{max-width:1080px;margin:0 auto;padding:0 20px 40px}#about details{border-top:1px solid var(--line);padding:10px 0}#about summary{cursor:pointer;font-weight:600}#about a{color:var(--acc)}
+/* ---- Device optimisation: phones, tablets, touch, print ---- */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+.scr{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+input[type=checkbox]{width:22px;height:22px;min-width:22px;accent-color:var(--acc)}
+.it input[type=date],.it input[type=time]{min-width:140px}
+@media (pointer:coarse){button,select,input,textarea{min-height:44px}.cell textarea,input[type=checkbox]{min-height:0}.cell .mini{min-height:40px}input[type=checkbox]{width:26px;height:26px;min-width:26px}}
+@media (max-width:560px){
+h1{flex:1 1 100%}header button{padding:6px 12px;min-height:38px}
+#bar select{flex:1 1 100%}
+.cell{aspect-ratio:auto;min-height:112px}
+.it{gap:8px}.it .t{flex:1 1 calc(100% - 44px)}.it select,.it input[type=date],.it input[type=time]{flex:1 1 130px}.it .nm{flex:0 0 84px}
+.ov{place-items:end stretch;padding:0}.dlg{max-width:none;border-radius:16px 16px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+.toast{width:calc(100% - 28px);text-align:center}}
+@media print{header,#bar,nav,#about,#tt,.ov{display:none!important}body{background:#fff}.card{box-shadow:none;break-inside:avoid}main{max-width:none;padding:0}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -157,7 +178,7 @@ let W,S,loadNote='';
 try{const raw=localStorage.getItem(KEY);try{W=normW(JSON.parse(raw))}catch(e){W=normW(null);if(raw){localStorage.setItem(KEY+'.corrupt',raw);loadNote='Saved data could not be read. A copy was kept in this browser under a separate key.'}}}
 catch(e){W=normW(null);loadNote='Browser storage is unavailable (private mode or blocked), so your work cannot be saved. Use Data > Backup to keep a copy.'}
 S=W.charts[W.active];
-let view='map',cur=0,flt='all',zoom=90;const hist=[],redo=[];
+let view='map',cur=0,flt='all',zoom=innerWidth<600?72:90;const hist=[],redo=[];
 const $=s=>document.querySelector(s);
 const pct=(a,b)=>b?Math.round(100*a/b):0;
 const sn=i=>S.subs[i].trim()||'Strategic goal '+(i+1);
@@ -244,7 +265,7 @@ function vFull(){
     g9.append(h('div',{class:cls,tabindex:0,role:'button',title:t,'aria-label':(t||'empty cell')+', row '+(r+1)+' column '+(c+1),onclick:go,onkeydown:e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}},t))}
   const z=h('input',{type:'range',min:50,max:150,value:zoom,'aria-label':'Zoom',oninput:e=>{zoom=+e.target.value;g9.style.setProperty('--cw',zoom+'px')}});
   return h('div',{class:'card'},h('h2',{},'Full 9×9 chart'),
-    h('p',{class:'mut sm'},'81 positions, 73 distinct entries: 1 goal, 8 strategic goals (shown twice) and 64 actions. Select any cell to edit it.'),
+    h('p',{class:'mut sm'},'81 positions, 73 distinct entries: 1 goal, 8 strategic goals (shown twice) and 64 actions. Select any cell to edit it. On a phone, swipe sideways or use Fit to screen.'),
     h('div',{class:'row'},h('span',{class:'sm'},'Zoom'),h('div',{style:'width:160px'},z),h('button',{onclick:()=>{zoom=Math.max(50,Math.min(150,Math.floor((innerWidth-64)/9)));render()}},'Fit to screen')),
     h('div',{class:'scr'},g9))}
 
